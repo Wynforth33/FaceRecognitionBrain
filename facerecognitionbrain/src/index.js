@@ -1,8 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+// IMPORTS
+	// General
+		import './index.css';
+
+	// Libraries
+		import React from 'react';
+		import ReactDOM from 'react-dom'; 
+		import * as serviceWorker from './serviceWorker';
+		import 'tachyons';
+
+	// Components
+		import App from './App';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
