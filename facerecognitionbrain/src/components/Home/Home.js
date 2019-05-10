@@ -8,14 +8,14 @@
 	import ImageLinkForm from '../ImageLinkForm/ImageLinkForm';
 	import FaceRecognition from '../FaceRecognition/FaceRecognition';
 
-const Home = ({ onInputChange, onButtonSubmit, imageUrl, boxes }) => {
+const Home = ({ onInputChange, onPictureSubmit, imageUrl, boxes, user }) => {
 	return (
 		<div>
             <Logo />
-            <Rank />
+            <Rank user={user} />
             <ImageLinkForm 
                 onInputChange={onInputChange} 
-                onButtonSubmit={onButtonSubmit} 
+                onPictureSubmit={onPictureSubmit} 
             />
             <FaceRecognition 
                 imageUrl={imageUrl} 

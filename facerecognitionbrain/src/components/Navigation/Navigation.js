@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Navigation = ({ onRouteChange, page }) => {
+const Navigation = ({ onRouteChange, page, signOutUser }) => {
 	let routeChange, buttonValue;
 	switch (page) {
 		case 'signin':
@@ -26,7 +26,7 @@ const Navigation = ({ onRouteChange, page }) => {
 
 	return (
 		<nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
-			<p onClick={() => onRouteChange(routeChange)} className="f3 link dim black underline pa3 pointer">{buttonValue}</p>
+			<p onClick={() => { signOutUser(); onRouteChange(routeChange) }} className="f3 link dim black underline pa3 pointer">{buttonValue}</p>
 		</nav>
 	)	
 }

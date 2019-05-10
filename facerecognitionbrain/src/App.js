@@ -44,7 +44,15 @@ class App extends Component {
       input: '',
       imageUrl: '',
       boxes: [],
-      route: 'signin'
+      route: 'signin',
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
     }
   }
 
@@ -88,18 +96,50 @@ class App extends Component {
     this.setState({ input: event.target.value })
   }
 
-  onButtonSubmit = () => {
-    this.setState({ imageUrl: this.state.input })
+  onPictureSubmit = () => {
+    const { input, user } = this.state; 
+    this.setState({ imageUrl: input })
     app.models
       .predict(
           Clarifai.FACE_DETECT_MODEL, 
-          this.state.input)
-      .then( response => this.displayFaceBox( this.calculateFaceLocation(response) )
-      .catch( err => console.log("Oops", err)));
+          input)
+      .then( res => {
+        if (res) {
+          fetch(`http://localhost:3000/image/${user.id}`, { method: 'put'})
+          .then( res => res.json())
+          .then( user => this.setState({user: user}))
+        }
+        this.displayFaceBox( this.calculateFaceLocation(res))
+      })
+        .catch( err => console.log("Oops", err));
   }
 
   onRouteChange = (route) => {
     this.setState({ route: route });
+  }
+
+  loadUser = ( data ) => {
+    this.setState( {
+      isSignedIn: true,
+      user: data
+    });
+  }
+
+  signOutUser = () => {
+    this.setState({
+      input: '',
+      imageUrl: '',
+      boxes: [],
+      route: 'signin',
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
+    })
   }
 
   render() {
@@ -109,14 +149,20 @@ class App extends Component {
             className='particles'
             params={PARTICLE_OPTIONS}
         />
-        <Navigation onRouteChange={this.onRouteChange} page={this.state.route} />
+        <Navigation 
+                onRouteChange={this.onRouteChange} 
+                page={this.state.route}
+                signOutUser={this.signOutUser}
+        />
         <Router 
                 route={this.state.route}
                 onInputChange={this.onInputChange} 
-                onButtonSubmit={this.onButtonSubmit}
+                onPictureSubmit={this.onPictureSubmit}
                 imageUrl={this.state.imageUrl} 
                 boxes={this.state.boxes}
                 onRouteChange={this.onRouteChange}
+                loadUser={this.loadUser}
+                user={this.state.user}
             />
       </div>
     );
