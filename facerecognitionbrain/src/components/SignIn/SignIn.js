@@ -34,17 +34,19 @@ class SignIn extends Component {
       })
     })
       .then( resp => resp.json())
-      .then( user => {
-       if ( user.id ){
-        loadUser(user);
-        onRouteChange('home');
-      } else {
-        this.setState({
-          email: '',
-          password: ''
-        })
-      }
+      .then( data => {
+        const user = data[0]; 
+        if ( user.id ){
+          loadUser(user);
+          onRouteChange('home');
+        } else {
+          this.setState({
+            email: '',
+            password: ''
+          })
+        }
     })
+      .catch(err => console.log("Error: ", err));
   }
 
   render() {
